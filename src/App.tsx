@@ -9,7 +9,7 @@ function App() {
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: 'url(/public/1000207211_1688217873610.jpg)',
+          backgroundImage: 'url(/public/an1+.jpg)',
         }}
       >
         {/* Dark overlay for better text readability */}
@@ -57,7 +57,10 @@ function App() {
         </div>
 
         {/* Brand Name */}
-        <h1 className="text-6xl md:text-8xl lg:text-9xl font-light tracking-[0.3em] text-white mb-16 text-center drop-shadow-2xl">
+        <h1
+          className="text-6xl md:text-8xl lg:text-9xl font-light tracking-[0.3em] text-white mb-16 text-center drop-shadow-2xl font-serif"
+          style={{ fontFamily: "'Playfair Display', 'Merriweather', serif" }}
+        >
           ANANTA
         </h1>
 
@@ -70,20 +73,20 @@ function App() {
             PORTFOLIO
           </a>
           <a href="#" className="text-white hover:text-gray-300 transition-all duration-300 text-sm lg:text-base font-light tracking-widest drop-shadow-lg hover:drop-shadow-xl">
-            BOOK A SHOW
+            BOOK ME
           </a>
           <a href="#" className="text-white hover:text-gray-300 transition-all duration-300 text-sm lg:text-base font-light tracking-widest drop-shadow-lg hover:drop-shadow-xl">
             RELEASES
           </a>
-          <a href="#" className="text-white hover:text-gray-300 transition-all duration-300 text-sm lg:text-base font-light tracking-widest drop-shadow-lg hover:drop-shadow-xl">
+          {/* <a href="#" className="text-white hover:text-gray-300 transition-all duration-300 text-sm lg:text-base font-light tracking-widest drop-shadow-lg hover:drop-shadow-xl">
             COMMISSIONS
-          </a>
+          </a> */}
           <a href="#" className="text-white hover:text-gray-300 transition-all duration-300 text-sm lg:text-base font-light tracking-widest drop-shadow-lg hover:drop-shadow-xl">
             ABOUT
           </a>
-          <a href="#" className="text-white hover:text-gray-300 transition-all duration-300 text-sm lg:text-base font-light tracking-widest drop-shadow-lg hover:drop-shadow-xl">
+          {/* <a href="#" className="text-white hover:text-gray-300 transition-all duration-300 text-sm lg:text-base font-light tracking-widest drop-shadow-lg hover:drop-shadow-xl">
             PRESS
-          </a>
+          </a> */}
           <a href="#" className="text-white hover:text-gray-300 transition-all duration-300 text-sm lg:text-base font-light tracking-widest drop-shadow-lg hover:drop-shadow-xl">
             CONTACTS
           </a>
