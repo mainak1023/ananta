@@ -12,18 +12,18 @@ function App() {
   const getBackgroundImage = (page: Page) => {
     const backgrounds = {
       home: '/ananta.avif',
-      portfolio: '/20231105_231826.jpg',
-      book: '/1000207211_1688217873610.jpg',
-      releases: '/ananta.jpg',
-      about: '/ananta.avif',
-      contacts: '/20231105_231826.jpg'
+      portfolio: '/one.avif',
+      book: '/two.avif',
+      releases: '/three.avif',
+      about: '/one.avif',
+      contacts: '/ananta.avif',
     };
     return backgrounds[page];
   };
 
   const navigateToPage = (page: Page) => {
     if (page === currentPage) return;
-    
+
     setIsTransitioning(true);
     setTimeout(() => {
       setCurrentPage(page);
@@ -73,14 +73,14 @@ function App() {
           />
         </svg>
       </a>
-      <a href="mailto:anantaadhikary03@gmail.com" className="text-white/80 hover:text-white transition-all duration-300 transform hover:scale-110" aria-label="Email">
+      {/* <a href="mailto:anantaadhikary03@gmail.com" className="text-white/80 hover:text-white transition-all duration-300 transform hover:scale-110" aria-label="Email">
         <svg width={20} height={20} viewBox="0 0 24 24" fill="none">
           <path
             d="M2 4a2 2 0 012-2h16a2 2 0 012 2v16a2 2 0 01-2 2H4a2 2 0 01-2-2V4zm2 0v.01L12 13l8-8.99V4H4zm16 2.41l-7.29 7.29a1 1 0 01-1.42 0L4 6.41V20h16V6.41z"
             fill="currentColor"
           />
         </svg>
-      </a>
+      </a> */}
     </div>
   );
 
@@ -108,8 +108,8 @@ function App() {
   );
 
   const BackToHomeButton = () => (
-    <button 
-      onClick={() => navigateToPage('home')} 
+    <button
+      onClick={() => navigateToPage('home')}
       className="fixed top-6 left-6 z-50 bg-black/20 backdrop-blur-md border border-white/20 text-white p-3 rounded-full hover:bg-black/30 transition-all duration-300 transform hover:scale-105"
       aria-label="Back to Home"
     >
@@ -119,7 +119,7 @@ function App() {
 
   const ScrollToTopButton = () => (
     showScrollTop && (
-      <button 
+      <button
         onClick={scrollToTop}
         className="fixed bottom-6 right-6 z-50 bg-black/20 backdrop-blur-md border border-white/20 text-white p-3 rounded-full hover:bg-black/30 transition-all duration-300 transform hover:scale-105"
         aria-label="Scroll to Top"
@@ -145,7 +145,7 @@ function App() {
   const PortfolioPage = () => (
     <div className="relative z-20 min-h-screen px-4 py-20 text-white">
       <BackToHomeButton />
-      
+
       <div className="max-w-4xl mx-auto">
         <h1
           className="text-4xl md:text-5xl lg:text-6xl font-light tracking-[0.2em] text-white mb-12 text-center font-serif"
@@ -153,20 +153,20 @@ function App() {
         >
           PORTFOLIO
         </h1>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
           <div className="bg-black/20 backdrop-blur-md rounded-xl p-6 border border-white/10 hover:bg-black/30 transition-all duration-300 transform hover:scale-105">
             <Music className="w-8 h-8 mb-4 text-white" />
             <h3 className="text-xl font-light mb-3 tracking-wide">Classical Performances</h3>
             <p className="text-white/80 text-sm leading-relaxed">Traditional Indian classical music performances showcasing the depth and beauty of Bansuri melodies.</p>
           </div>
-          
+
           <div className="bg-black/20 backdrop-blur-md rounded-xl p-6 border border-white/10 hover:bg-black/30 transition-all duration-300 transform hover:scale-105">
             <Volume2 className="w-8 h-8 mb-4 text-white" />
             <h3 className="text-xl font-light mb-3 tracking-wide">Studio Recordings</h3>
             <p className="text-white/80 text-sm leading-relaxed">Professional studio recordings featuring original compositions and traditional ragas.</p>
           </div>
-          
+
           <div className="bg-black/20 backdrop-blur-md rounded-xl p-6 border border-white/10 hover:bg-black/30 transition-all duration-300 transform hover:scale-105">
             <Cloud className="w-8 h-8 mb-4 text-white" />
             <h3 className="text-xl font-light mb-3 tracking-wide">Live Sessions</h3>
@@ -174,7 +174,7 @@ function App() {
           </div>
         </div>
       </div>
-      
+
       <ScrollToTopButton />
     </div>
   );
@@ -182,7 +182,7 @@ function App() {
   const BookMePage = () => (
     <div className="relative z-20 min-h-screen px-4 py-20 text-white">
       <BackToHomeButton />
-      
+
       <div className="max-w-4xl mx-auto">
         <h1
           className="text-4xl md:text-5xl lg:text-6xl font-light tracking-[0.2em] text-white mb-8 text-center font-serif"
@@ -190,35 +190,35 @@ function App() {
         >
           BOOK ME
         </h1>
-        
+
         <div className="text-center mb-12">
           <p className="text-lg md:text-xl leading-relaxed mb-8 text-white/90 font-light max-w-3xl mx-auto">
             Experience the enchanting melodies of Indian classical Bansuri music. Available for concerts, private events, meditation sessions, and cultural celebrations.
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
           <div className="bg-black/20 backdrop-blur-md rounded-xl p-6 border border-white/10 hover:bg-black/30 transition-all duration-300">
             <h3 className="text-xl font-light mb-3 tracking-wide">Concert Performances</h3>
             <p className="text-white/80 text-sm leading-relaxed">Full-length classical music concerts for auditoriums and cultural venues.</p>
           </div>
-          
+
           <div className="bg-black/20 backdrop-blur-md rounded-xl p-6 border border-white/10 hover:bg-black/30 transition-all duration-300">
             <h3 className="text-xl font-light mb-3 tracking-wide">Private Events</h3>
             <p className="text-white/80 text-sm leading-relaxed">Intimate performances for weddings, celebrations, and special occasions.</p>
           </div>
-          
+
           <div className="bg-black/20 backdrop-blur-md rounded-xl p-6 border border-white/10 hover:bg-black/30 transition-all duration-300">
             <h3 className="text-xl font-light mb-3 tracking-wide">Meditation Sessions</h3>
             <p className="text-white/80 text-sm leading-relaxed">Peaceful Bansuri music for yoga studios and wellness centers.</p>
           </div>
-          
+
           <div className="bg-black/20 backdrop-blur-md rounded-xl p-6 border border-white/10 hover:bg-black/30 transition-all duration-300">
             <h3 className="text-xl font-light mb-3 tracking-wide">Cultural Events</h3>
             <p className="text-white/80 text-sm leading-relaxed">Traditional performances for festivals and cultural celebrations.</p>
           </div>
         </div>
-        
+
         <div className="text-center">
           <a
             href="https://wa.me/7478994307?text=Hello%20Ananta!%20I%20would%20like%20to%20book%20a%20show."
@@ -230,7 +230,7 @@ function App() {
           </a>
         </div>
       </div>
-      
+
       <ScrollToTopButton />
     </div>
   );
@@ -238,7 +238,7 @@ function App() {
   const ReleasesPage = () => (
     <div className="relative z-20 min-h-screen px-4 py-20 text-white">
       <BackToHomeButton />
-      
+
       <div className="max-w-4xl mx-auto">
         <h1
           className="text-4xl md:text-5xl lg:text-6xl font-light tracking-[0.2em] text-white mb-8 text-center font-serif"
@@ -246,13 +246,13 @@ function App() {
         >
           RELEASES
         </h1>
-        
+
         <div className="text-center mb-12">
           <p className="text-lg md:text-xl leading-relaxed text-white/90 font-light max-w-3xl mx-auto">
             Discover my musical journey through these carefully crafted releases, each telling a unique story through the voice of the Bansuri.
           </p>
         </div>
-        
+
         <div className="space-y-6 mb-16">
           <div className="bg-black/20 backdrop-blur-md rounded-xl p-8 border border-white/10 hover:bg-black/30 transition-all duration-300">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
@@ -265,7 +265,7 @@ function App() {
               </a>
             </div>
           </div>
-          
+
           <div className="bg-black/20 backdrop-blur-md rounded-xl p-8 border border-white/10 hover:bg-black/30 transition-all duration-300">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="text-center md:text-left">
@@ -277,14 +277,14 @@ function App() {
               </a>
             </div>
           </div>
-          
+
           <div className="bg-black/20 backdrop-blur-md rounded-xl p-8 border border-white/10">
             <h3 className="text-2xl font-light mb-2 tracking-wide text-center">Upcoming Releases</h3>
             <p className="text-white/80 text-center">New compositions and collaborations coming soon. Stay tuned for updates.</p>
           </div>
         </div>
       </div>
-      
+
       <ScrollToTopButton />
     </div>
   );
@@ -292,7 +292,7 @@ function App() {
   const AboutPage = () => (
     <div className="relative z-20 min-h-screen px-4 py-20 text-white">
       <BackToHomeButton />
-      
+
       <div className="max-w-4xl mx-auto">
         <h1
           className="text-4xl md:text-5xl lg:text-6xl font-light tracking-[0.2em] text-white mb-12 text-center font-serif"
@@ -300,7 +300,7 @@ function App() {
         >
           ABOUT
         </h1>
-        
+
         <div className="bg-black/20 backdrop-blur-md rounded-xl p-8 md:p-12 border border-white/10 mb-12">
           <p className="text-lg md:text-xl leading-relaxed text-white/90 font-light text-center mb-8" style={{ lineHeight: '1.8' }}>
             As an Indian classical musician, I've dedicated the past five years of my life to mastering the enchanting art of playing the Indian Bansuri. With every breath, I weave melodies that resonate with the soul, drawing inspiration from centuries-old traditions and infusing them with my own unique expression.
@@ -309,25 +309,25 @@ function App() {
             Through this timeless instrument, I strive to transport listeners to a realm of tranquility and bliss, where the music speaks the language of the heart.
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-black/15 backdrop-blur-md rounded-xl p-8 border border-white/10 text-center hover:bg-black/25 transition-all duration-300">
             <h3 className="text-3xl font-light mb-2 text-white">5+</h3>
             <p className="text-white/80 text-sm tracking-wide">Years of Dedication</p>
           </div>
-          
+
           <div className="bg-black/15 backdrop-blur-md rounded-xl p-8 border border-white/10 text-center hover:bg-black/25 transition-all duration-300">
             <h3 className="text-3xl font-light mb-2 text-white">∞</h3>
             <p className="text-white/80 text-sm tracking-wide">Melodies Created</p>
           </div>
-          
+
           <div className="bg-black/15 backdrop-blur-md rounded-xl p-8 border border-white/10 text-center hover:bg-black/25 transition-all duration-300">
             <h3 className="text-3xl font-light mb-2 text-white">♪</h3>
             <p className="text-white/80 text-sm tracking-wide">Hearts Touched</p>
           </div>
         </div>
       </div>
-      
+
       <ScrollToTopButton />
     </div>
   );
@@ -335,7 +335,7 @@ function App() {
   const ContactsPage = () => (
     <div className="relative z-20 min-h-screen px-4 py-20 text-white">
       <BackToHomeButton />
-      
+
       <div className="max-w-3xl mx-auto">
         <h1
           className="text-4xl md:text-5xl lg:text-6xl font-light tracking-[0.2em] text-white mb-12 text-center font-serif"
@@ -343,7 +343,7 @@ function App() {
         >
           CONTACTS
         </h1>
-        
+
         <div className="space-y-6 mb-12">
           <div className="bg-black/20 backdrop-blur-md rounded-xl p-6 border border-white/10 hover:bg-black/30 transition-all duration-300">
             <div className="flex items-center space-x-4">
@@ -354,7 +354,7 @@ function App() {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-black/20 backdrop-blur-md rounded-xl p-6 border border-white/10 hover:bg-black/30 transition-all duration-300">
             <div className="flex items-center space-x-4">
               <Mail className="w-6 h-6 text-white flex-shrink-0" />
@@ -364,7 +364,7 @@ function App() {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-black/20 backdrop-blur-md rounded-xl p-6 border border-white/10 hover:bg-black/30 transition-all duration-300">
             <div className="flex items-start space-x-4">
               <MapPin className="w-6 h-6 text-white flex-shrink-0 mt-1" />
@@ -379,7 +379,7 @@ function App() {
             </div>
           </div>
         </div>
-        
+
         <div className="text-center">
           <p className="text-white/80 mb-8 font-light text-lg">Let's create beautiful music together</p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
@@ -400,7 +400,7 @@ function App() {
           </div>
         </div>
       </div>
-      
+
       <ScrollToTopButton />
     </div>
   );
