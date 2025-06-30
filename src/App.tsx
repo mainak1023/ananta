@@ -9,7 +9,7 @@ function App() {
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: 'url(/public/an1+.jpg)',
+          backgroundImage: 'url(/ananta.jpg)',
         }}
       >
         {/* Dark overlay for better text readability */}
