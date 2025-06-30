@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import { Youtube, Facebook, Instagram, Music, Volume2, Cloud, ArrowLeft, Mail, Phone, MapPin } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Youtube, Facebook, Instagram, Music, Volume2, Cloud, ArrowLeft, Mail, Phone, MapPin, ChevronUp } from 'lucide-react';
 import { SiSpotify } from 'react-icons/si';
 
 type Page = 'home' | 'portfolio' | 'book' | 'releases' | 'about' | 'contacts';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const getBackgroundImage = (page: Page) => {
     const backgrounds = {
@@ -19,23 +21,47 @@ function App() {
     return backgrounds[page];
   };
 
+  const navigateToPage = (page: Page) => {
+    if (page === currentPage) return;
+    
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setCurrentPage(page);
+      setIsTransitioning(false);
+      window.scrollTo(0, 0);
+    }, 300);
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const SocialIcons = () => (
-    <div className="flex space-x-6 mb-12">
-      <a href="https://youtube.com/@wind_man_ananta?si=91l97dHGAF9VXg3a" className="text-white hover:text-gray-300 transition-all duration-300 transform hover:scale-110 drop-shadow-lg">
+    <div className="flex justify-center space-x-6 mb-8">
+      <a href="https://youtube.com/@wind_man_ananta?si=91l97dHGAF9VXg3a" className="text-white/80 hover:text-white transition-all duration-300 transform hover:scale-110">
         <Youtube size={20} />
       </a>
-      <a href="https://www.facebook.com/share/1BsDHQK9DG/" className="text-white hover:text-gray-300 transition-all duration-300 transform hover:scale-110 drop-shadow-lg">
+      <a href="https://www.facebook.com/share/1BsDHQK9DG/" className="text-white/80 hover:text-white transition-all duration-300 transform hover:scale-110">
         <Facebook size={20} />
       </a>
-      <a href="https://www.instagram.com/wind_man_ananta?igsh=azhpZmo1bGR0NWZs" className="text-white hover:text-gray-300 transition-all duration-300 transform hover:scale-110 drop-shadow-lg">
+      <a href="https://www.instagram.com/wind_man_ananta?igsh=azhpZmo1bGR0NWZs" className="text-white/80 hover:text-white transition-all duration-300 transform hover:scale-110">
         <Instagram size={20} />
       </a>
-      <a href="https://open.spotify.com/artist/2Qd6hwMRyYB9H9n1tFoZT3" className="text-white hover:text-green-400 transition-all duration-300 transform hover:scale-110 drop-shadow-lg" target="_blank" rel="noopener noreferrer">
+      <a href="https://open.spotify.com/artist/2Qd6hwMRyYB9H9n1tFoZT3" className="text-white/80 hover:text-green-400 transition-all duration-300 transform hover:scale-110" target="_blank" rel="noopener noreferrer">
         <SiSpotify size={20} />
       </a>
       <a
         href="https://wa.me/7478994307?text=Hello%20Ananta!%20I%20would%20like%20to%20book%20a%20show."
-        className="text-white hover:text-green-400 transition-all duration-300 transform hover:scale-110 drop-shadow-lg"
+        className="text-white/80 hover:text-green-400 transition-all duration-300 transform hover:scale-110"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="WhatsApp"
@@ -47,7 +73,7 @@ function App() {
           />
         </svg>
       </a>
-      <a href="mailto:anantaadhikary03@gmail.com" className="text-white hover:text-gray-300 transition-all duration-300 transform hover:scale-110 drop-shadow-lg" aria-label="Email">
+      <a href="mailto:anantaadhikary03@gmail.com" className="text-white/80 hover:text-white transition-all duration-300 transform hover:scale-110" aria-label="Email">
         <svg width={20} height={20} viewBox="0 0 24 24" fill="none">
           <path
             d="M2 4a2 2 0 012-2h16a2 2 0 012 2v16a2 2 0 01-2 2H4a2 2 0 01-2-2V4zm2 0v.01L12 13l8-8.99V4H4zm16 2.41l-7.29 7.29a1 1 0 01-1.42 0L4 6.41V20h16V6.41z"
@@ -58,44 +84,57 @@ function App() {
     </div>
   );
 
-  const Navigation = ({ showBackButton = false }: { showBackButton?: boolean }) => (
-    <nav className="flex flex-wrap justify-center gap-6 lg:gap-8">
-      {showBackButton && (
-        <button 
-          onClick={() => setCurrentPage('home')} 
-          className="text-white hover:text-gray-300 transition-all duration-300 text-sm lg:text-base font-light tracking-widest drop-shadow-lg hover:drop-shadow-xl flex items-center gap-2 mb-4"
-        >
-          <ArrowLeft size={16} />
-          HOME
-        </button>
-      )}
-      <button onClick={() => setCurrentPage('home')} className={`text-white hover:text-gray-300 transition-all duration-300 text-sm lg:text-base font-light tracking-widest drop-shadow-lg hover:drop-shadow-xl ${currentPage === 'home' ? 'text-gray-300' : ''}`}>
+  const Navigation = () => (
+    <nav className="flex flex-wrap justify-center gap-4 md:gap-6 lg:gap-8 px-4">
+      <button onClick={() => navigateToPage('home')} className={`text-white hover:text-gray-300 transition-all duration-300 text-sm lg:text-base font-light tracking-widest ${currentPage === 'home' ? 'text-gray-300 border-b border-white/50' : ''} pb-1`}>
         HOME
       </button>
-      <button onClick={() => setCurrentPage('portfolio')} className={`text-white hover:text-gray-300 transition-all duration-300 text-sm lg:text-base font-light tracking-widest drop-shadow-lg hover:drop-shadow-xl ${currentPage === 'portfolio' ? 'text-gray-300' : ''}`}>
+      <button onClick={() => navigateToPage('portfolio')} className={`text-white hover:text-gray-300 transition-all duration-300 text-sm lg:text-base font-light tracking-widest ${currentPage === 'portfolio' ? 'text-gray-300 border-b border-white/50' : ''} pb-1`}>
         PORTFOLIO
       </button>
-      <button onClick={() => setCurrentPage('book')} className={`text-white hover:text-gray-300 transition-all duration-300 text-sm lg:text-base font-light tracking-widest drop-shadow-lg hover:drop-shadow-xl ${currentPage === 'book' ? 'text-gray-300' : ''}`}>
+      <button onClick={() => navigateToPage('book')} className={`text-white hover:text-gray-300 transition-all duration-300 text-sm lg:text-base font-light tracking-widest ${currentPage === 'book' ? 'text-gray-300 border-b border-white/50' : ''} pb-1`}>
         BOOK ME
       </button>
-      <button onClick={() => setCurrentPage('releases')} className={`text-white hover:text-gray-300 transition-all duration-300 text-sm lg:text-base font-light tracking-widest drop-shadow-lg hover:drop-shadow-xl ${currentPage === 'releases' ? 'text-gray-300' : ''}`}>
+      <button onClick={() => navigateToPage('releases')} className={`text-white hover:text-gray-300 transition-all duration-300 text-sm lg:text-base font-light tracking-widest ${currentPage === 'releases' ? 'text-gray-300 border-b border-white/50' : ''} pb-1`}>
         RELEASES
       </button>
-      <button onClick={() => setCurrentPage('about')} className={`text-white hover:text-gray-300 transition-all duration-300 text-sm lg:text-base font-light tracking-widest drop-shadow-lg hover:drop-shadow-xl ${currentPage === 'about' ? 'text-gray-300' : ''}`}>
+      <button onClick={() => navigateToPage('about')} className={`text-white hover:text-gray-300 transition-all duration-300 text-sm lg:text-base font-light tracking-widest ${currentPage === 'about' ? 'text-gray-300 border-b border-white/50' : ''} pb-1`}>
         ABOUT
       </button>
-      <button onClick={() => setCurrentPage('contacts')} className={`text-white hover:text-gray-300 transition-all duration-300 text-sm lg:text-base font-light tracking-widest drop-shadow-lg hover:drop-shadow-xl ${currentPage === 'contacts' ? 'text-gray-300' : ''}`}>
+      <button onClick={() => navigateToPage('contacts')} className={`text-white hover:text-gray-300 transition-all duration-300 text-sm lg:text-base font-light tracking-widest ${currentPage === 'contacts' ? 'text-gray-300 border-b border-white/50' : ''} pb-1`}>
         CONTACTS
       </button>
     </nav>
+  );
+
+  const BackToHomeButton = () => (
+    <button 
+      onClick={() => navigateToPage('home')} 
+      className="fixed top-6 left-6 z-50 bg-black/20 backdrop-blur-md border border-white/20 text-white p-3 rounded-full hover:bg-black/30 transition-all duration-300 transform hover:scale-105"
+      aria-label="Back to Home"
+    >
+      <ArrowLeft size={20} />
+    </button>
+  );
+
+  const ScrollToTopButton = () => (
+    showScrollTop && (
+      <button 
+        onClick={scrollToTop}
+        className="fixed bottom-6 right-6 z-50 bg-black/20 backdrop-blur-md border border-white/20 text-white p-3 rounded-full hover:bg-black/30 transition-all duration-300 transform hover:scale-105"
+        aria-label="Scroll to Top"
+      >
+        <ChevronUp size={20} />
+      </button>
+    )
   );
 
   const HomePage = () => (
     <div className="relative z-20 flex flex-col items-center justify-center min-h-screen px-4 text-white">
       <SocialIcons />
       <h1
-        className="text-6xl md:text-8xl lg:text-9xl font-light tracking-[0.3em] text-white mb-16 text-center drop-shadow-2xl font-serif animate-fade-in"
-        style={{ fontFamily: "'Playfair Display', 'Merriweather', serif" }}
+        className="text-5xl md:text-7xl lg:text-8xl font-light tracking-[0.3em] text-white mb-12 text-center font-serif animate-fade-in"
+        style={{ fontFamily: "'Playfair Display', serif" }}
       >
         ANANTA
       </h1>
@@ -104,224 +143,234 @@ function App() {
   );
 
   const PortfolioPage = () => (
-    <div className="relative z-20 flex flex-col items-center justify-center min-h-screen px-4 text-white">
-      <SocialIcons />
-      <h1
-        className="text-4xl md:text-6xl lg:text-7xl font-light tracking-[0.2em] text-white mb-8 text-center drop-shadow-2xl font-serif"
-        style={{ fontFamily: "'Playfair Display', 'Merriweather', serif" }}
-      >
-        PORTFOLIO
-      </h1>
+    <div className="relative z-20 min-h-screen px-4 py-20 text-white">
+      <BackToHomeButton />
       
-      <div className="max-w-4xl mx-auto mb-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 border border-white/20 hover:bg-black/40 transition-all duration-300">
+      <div className="max-w-4xl mx-auto">
+        <h1
+          className="text-4xl md:text-5xl lg:text-6xl font-light tracking-[0.2em] text-white mb-12 text-center font-serif"
+          style={{ fontFamily: "'Playfair Display', serif" }}
+        >
+          PORTFOLIO
+        </h1>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+          <div className="bg-black/20 backdrop-blur-md rounded-xl p-6 border border-white/10 hover:bg-black/30 transition-all duration-300 transform hover:scale-105">
             <Music className="w-8 h-8 mb-4 text-white" />
-            <h3 className="text-xl font-light mb-2 tracking-wide">Classical Performances</h3>
-            <p className="text-gray-200 text-sm leading-relaxed">Traditional Indian classical music performances showcasing the depth and beauty of Bansuri melodies.</p>
+            <h3 className="text-xl font-light mb-3 tracking-wide">Classical Performances</h3>
+            <p className="text-white/80 text-sm leading-relaxed">Traditional Indian classical music performances showcasing the depth and beauty of Bansuri melodies.</p>
           </div>
           
-          <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 border border-white/20 hover:bg-black/40 transition-all duration-300">
+          <div className="bg-black/20 backdrop-blur-md rounded-xl p-6 border border-white/10 hover:bg-black/30 transition-all duration-300 transform hover:scale-105">
             <Volume2 className="w-8 h-8 mb-4 text-white" />
-            <h3 className="text-xl font-light mb-2 tracking-wide">Studio Recordings</h3>
-            <p className="text-gray-200 text-sm leading-relaxed">Professional studio recordings featuring original compositions and traditional ragas.</p>
+            <h3 className="text-xl font-light mb-3 tracking-wide">Studio Recordings</h3>
+            <p className="text-white/80 text-sm leading-relaxed">Professional studio recordings featuring original compositions and traditional ragas.</p>
           </div>
           
-          <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 border border-white/20 hover:bg-black/40 transition-all duration-300">
+          <div className="bg-black/20 backdrop-blur-md rounded-xl p-6 border border-white/10 hover:bg-black/30 transition-all duration-300 transform hover:scale-105">
             <Cloud className="w-8 h-8 mb-4 text-white" />
-            <h3 className="text-xl font-light mb-2 tracking-wide">Live Sessions</h3>
-            <p className="text-gray-200 text-sm leading-relaxed">Intimate live sessions capturing the spontaneous beauty of Indian classical music.</p>
+            <h3 className="text-xl font-light mb-3 tracking-wide">Live Sessions</h3>
+            <p className="text-white/80 text-sm leading-relaxed">Intimate live sessions capturing the spontaneous beauty of Indian classical music.</p>
           </div>
         </div>
       </div>
       
-      <Navigation showBackButton />
+      <ScrollToTopButton />
     </div>
   );
 
   const BookMePage = () => (
-    <div className="relative z-20 flex flex-col items-center justify-center min-h-screen px-4 text-white">
-      <SocialIcons />
-      <h1
-        className="text-4xl md:text-6xl lg:text-7xl font-light tracking-[0.2em] text-white mb-8 text-center drop-shadow-2xl font-serif"
-        style={{ fontFamily: "'Playfair Display', 'Merriweather', serif" }}
-      >
-        BOOK ME
-      </h1>
+    <div className="relative z-20 min-h-screen px-4 py-20 text-white">
+      <BackToHomeButton />
       
-      <div className="max-w-2xl mx-auto mb-12 text-center">
-        <p className="text-lg md:text-xl leading-relaxed mb-8 text-gray-100 font-light">
-          Experience the enchanting melodies of Indian classical Bansuri music. Available for concerts, private events, meditation sessions, and cultural celebrations.
-        </p>
+      <div className="max-w-4xl mx-auto">
+        <h1
+          className="text-4xl md:text-5xl lg:text-6xl font-light tracking-[0.2em] text-white mb-8 text-center font-serif"
+          style={{ fontFamily: "'Playfair Display', serif" }}
+        >
+          BOOK ME
+        </h1>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+        <div className="text-center mb-12">
+          <p className="text-lg md:text-xl leading-relaxed mb-8 text-white/90 font-light max-w-3xl mx-auto">
+            Experience the enchanting melodies of Indian classical Bansuri music. Available for concerts, private events, meditation sessions, and cultural celebrations.
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          <div className="bg-black/20 backdrop-blur-md rounded-xl p-6 border border-white/10 hover:bg-black/30 transition-all duration-300">
             <h3 className="text-xl font-light mb-3 tracking-wide">Concert Performances</h3>
-            <p className="text-gray-200 text-sm">Full-length classical music concerts for auditoriums and cultural venues.</p>
+            <p className="text-white/80 text-sm leading-relaxed">Full-length classical music concerts for auditoriums and cultural venues.</p>
           </div>
           
-          <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+          <div className="bg-black/20 backdrop-blur-md rounded-xl p-6 border border-white/10 hover:bg-black/30 transition-all duration-300">
             <h3 className="text-xl font-light mb-3 tracking-wide">Private Events</h3>
-            <p className="text-gray-200 text-sm">Intimate performances for weddings, celebrations, and special occasions.</p>
+            <p className="text-white/80 text-sm leading-relaxed">Intimate performances for weddings, celebrations, and special occasions.</p>
           </div>
           
-          <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+          <div className="bg-black/20 backdrop-blur-md rounded-xl p-6 border border-white/10 hover:bg-black/30 transition-all duration-300">
             <h3 className="text-xl font-light mb-3 tracking-wide">Meditation Sessions</h3>
-            <p className="text-gray-200 text-sm">Peaceful Bansuri music for yoga studios and wellness centers.</p>
+            <p className="text-white/80 text-sm leading-relaxed">Peaceful Bansuri music for yoga studios and wellness centers.</p>
           </div>
           
-          <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+          <div className="bg-black/20 backdrop-blur-md rounded-xl p-6 border border-white/10 hover:bg-black/30 transition-all duration-300">
             <h3 className="text-xl font-light mb-3 tracking-wide">Cultural Events</h3>
-            <p className="text-gray-200 text-sm">Traditional performances for festivals and cultural celebrations.</p>
+            <p className="text-white/80 text-sm leading-relaxed">Traditional performances for festivals and cultural celebrations.</p>
           </div>
         </div>
         
-        <a
-          href="https://wa.me/7478994307?text=Hello%20Ananta!%20I%20would%20like%20to%20book%20a%20show."
-          className="inline-block bg-white/10 backdrop-blur-sm border border-white/30 text-white px-8 py-3 rounded-lg hover:bg-white/20 transition-all duration-300 font-light tracking-wide"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          BOOK NOW
-        </a>
+        <div className="text-center">
+          <a
+            href="https://wa.me/7478994307?text=Hello%20Ananta!%20I%20would%20like%20to%20book%20a%20show."
+            className="inline-block bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-xl hover:bg-white/20 transition-all duration-300 font-light tracking-wide transform hover:scale-105"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            BOOK NOW
+          </a>
+        </div>
       </div>
       
-      <Navigation showBackButton />
+      <ScrollToTopButton />
     </div>
   );
 
   const ReleasesPage = () => (
-    <div className="relative z-20 flex flex-col items-center justify-center min-h-screen px-4 text-white">
-      <SocialIcons />
-      <h1
-        className="text-4xl md:text-6xl lg:text-7xl font-light tracking-[0.2em] text-white mb-8 text-center drop-shadow-2xl font-serif"
-        style={{ fontFamily: "'Playfair Display', 'Merriweather', serif" }}
-      >
-        RELEASES
-      </h1>
+    <div className="relative z-20 min-h-screen px-4 py-20 text-white">
+      <BackToHomeButton />
       
-      <div className="max-w-4xl mx-auto mb-12">
-        <p className="text-lg md:text-xl leading-relaxed mb-8 text-gray-100 font-light text-center">
-          Discover my musical journey through these carefully crafted releases, each telling a unique story through the voice of the Bansuri.
-        </p>
+      <div className="max-w-4xl mx-auto">
+        <h1
+          className="text-4xl md:text-5xl lg:text-6xl font-light tracking-[0.2em] text-white mb-8 text-center font-serif"
+          style={{ fontFamily: "'Playfair Display', serif" }}
+        >
+          RELEASES
+        </h1>
         
-        <div className="space-y-6">
-          <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 border border-white/20 hover:bg-black/40 transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-xl font-light mb-2 tracking-wide">Latest Releases</h3>
-                <p className="text-gray-200 text-sm">Available on Spotify and other major streaming platforms</p>
+        <div className="text-center mb-12">
+          <p className="text-lg md:text-xl leading-relaxed text-white/90 font-light max-w-3xl mx-auto">
+            Discover my musical journey through these carefully crafted releases, each telling a unique story through the voice of the Bansuri.
+          </p>
+        </div>
+        
+        <div className="space-y-6 mb-16">
+          <div className="bg-black/20 backdrop-blur-md rounded-xl p-8 border border-white/10 hover:bg-black/30 transition-all duration-300">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="text-center md:text-left">
+                <h3 className="text-2xl font-light mb-2 tracking-wide">Latest Releases</h3>
+                <p className="text-white/80">Available on Spotify and other major streaming platforms</p>
               </div>
-              <a href="https://open.spotify.com/artist/2Qd6hwMRyYB9H9n1tFoZT3" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:text-green-300 transition-colors">
-                <SiSpotify size={32} />
+              <a href="https://open.spotify.com/artist/2Qd6hwMRyYB9H9n1tFoZT3" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:text-green-300 transition-colors transform hover:scale-110">
+                <SiSpotify size={40} />
               </a>
             </div>
           </div>
           
-          <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 border border-white/20 hover:bg-black/40 transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-xl font-light mb-2 tracking-wide">YouTube Performances</h3>
-                <p className="text-gray-200 text-sm">Live performances and studio sessions</p>
+          <div className="bg-black/20 backdrop-blur-md rounded-xl p-8 border border-white/10 hover:bg-black/30 transition-all duration-300">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="text-center md:text-left">
+                <h3 className="text-2xl font-light mb-2 tracking-wide">YouTube Performances</h3>
+                <p className="text-white/80">Live performances and studio sessions</p>
               </div>
-              <a href="https://youtube.com/@wind_man_ananta?si=91l97dHGAF9VXg3a" target="_blank" rel="noopener noreferrer" className="text-red-400 hover:text-red-300 transition-colors">
-                <Youtube size={32} />
+              <a href="https://youtube.com/@wind_man_ananta?si=91l97dHGAF9VXg3a" target="_blank" rel="noopener noreferrer" className="text-red-400 hover:text-red-300 transition-colors transform hover:scale-110">
+                <Youtube size={40} />
               </a>
             </div>
           </div>
           
-          <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-            <h3 className="text-xl font-light mb-2 tracking-wide">Upcoming Releases</h3>
-            <p className="text-gray-200 text-sm">New compositions and collaborations coming soon. Stay tuned for updates on social media.</p>
+          <div className="bg-black/20 backdrop-blur-md rounded-xl p-8 border border-white/10">
+            <h3 className="text-2xl font-light mb-2 tracking-wide text-center">Upcoming Releases</h3>
+            <p className="text-white/80 text-center">New compositions and collaborations coming soon. Stay tuned for updates.</p>
           </div>
         </div>
       </div>
       
-      <Navigation showBackButton />
+      <ScrollToTopButton />
     </div>
   );
 
   const AboutPage = () => (
-    <div className="relative z-20 flex flex-col items-center justify-center min-h-screen px-4 text-white">
-      <SocialIcons />
-      <h1
-        className="text-4xl md:text-6xl lg:text-7xl font-light tracking-[0.2em] text-white mb-8 text-center drop-shadow-2xl font-serif"
-        style={{ fontFamily: "'Playfair Display', 'Merriweather', serif" }}
-      >
-        ABOUT
-      </h1>
+    <div className="relative z-20 min-h-screen px-4 py-20 text-white">
+      <BackToHomeButton />
       
-      <div className="max-w-3xl mx-auto mb-12">
-        <div className="bg-black/30 backdrop-blur-sm rounded-lg p-8 border border-white/20">
-          <p className="text-lg md:text-xl leading-relaxed text-gray-100 font-light text-center" style={{ lineHeight: '1.8' }}>
+      <div className="max-w-4xl mx-auto">
+        <h1
+          className="text-4xl md:text-5xl lg:text-6xl font-light tracking-[0.2em] text-white mb-12 text-center font-serif"
+          style={{ fontFamily: "'Playfair Display', serif" }}
+        >
+          ABOUT
+        </h1>
+        
+        <div className="bg-black/20 backdrop-blur-md rounded-xl p-8 md:p-12 border border-white/10 mb-12">
+          <p className="text-lg md:text-xl leading-relaxed text-white/90 font-light text-center mb-8" style={{ lineHeight: '1.8' }}>
             As an Indian classical musician, I've dedicated the past five years of my life to mastering the enchanting art of playing the Indian Bansuri. With every breath, I weave melodies that resonate with the soul, drawing inspiration from centuries-old traditions and infusing them with my own unique expression.
           </p>
-          <br />
-          <p className="text-lg md:text-xl leading-relaxed text-gray-100 font-light text-center" style={{ lineHeight: '1.8' }}>
+          <p className="text-lg md:text-xl leading-relaxed text-white/90 font-light text-center" style={{ lineHeight: '1.8' }}>
             Through this timeless instrument, I strive to transport listeners to a realm of tranquility and bliss, where the music speaks the language of the heart.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-          <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/10 text-center">
-            <h3 className="text-2xl font-light mb-2 text-white">5+</h3>
-            <p className="text-gray-200 text-sm">Years of Dedication</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-black/15 backdrop-blur-md rounded-xl p-8 border border-white/10 text-center hover:bg-black/25 transition-all duration-300">
+            <h3 className="text-3xl font-light mb-2 text-white">5+</h3>
+            <p className="text-white/80 text-sm tracking-wide">Years of Dedication</p>
           </div>
           
-          <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/10 text-center">
-            <h3 className="text-2xl font-light mb-2 text-white">∞</h3>
-            <p className="text-gray-200 text-sm">Melodies Created</p>
+          <div className="bg-black/15 backdrop-blur-md rounded-xl p-8 border border-white/10 text-center hover:bg-black/25 transition-all duration-300">
+            <h3 className="text-3xl font-light mb-2 text-white">∞</h3>
+            <p className="text-white/80 text-sm tracking-wide">Melodies Created</p>
           </div>
           
-          <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/10 text-center">
-            <h3 className="text-2xl font-light mb-2 text-white">♪</h3>
-            <p className="text-gray-200 text-sm">Hearts Touched</p>
+          <div className="bg-black/15 backdrop-blur-md rounded-xl p-8 border border-white/10 text-center hover:bg-black/25 transition-all duration-300">
+            <h3 className="text-3xl font-light mb-2 text-white">♪</h3>
+            <p className="text-white/80 text-sm tracking-wide">Hearts Touched</p>
           </div>
         </div>
       </div>
       
-      <Navigation showBackButton />
+      <ScrollToTopButton />
     </div>
   );
 
   const ContactsPage = () => (
-    <div className="relative z-20 flex flex-col items-center justify-center min-h-screen px-4 text-white">
-      <SocialIcons />
-      <h1
-        className="text-4xl md:text-6xl lg:text-7xl font-light tracking-[0.2em] text-white mb-8 text-center drop-shadow-2xl font-serif"
-        style={{ fontFamily: "'Playfair Display', 'Merriweather', serif" }}
-      >
-        CONTACTS
-      </h1>
+    <div className="relative z-20 min-h-screen px-4 py-20 text-white">
+      <BackToHomeButton />
       
-      <div className="max-w-2xl mx-auto mb-12">
-        <div className="space-y-6">
-          <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 border border-white/20 hover:bg-black/40 transition-all duration-300">
+      <div className="max-w-3xl mx-auto">
+        <h1
+          className="text-4xl md:text-5xl lg:text-6xl font-light tracking-[0.2em] text-white mb-12 text-center font-serif"
+          style={{ fontFamily: "'Playfair Display', serif" }}
+        >
+          CONTACTS
+        </h1>
+        
+        <div className="space-y-6 mb-12">
+          <div className="bg-black/20 backdrop-blur-md rounded-xl p-6 border border-white/10 hover:bg-black/30 transition-all duration-300">
             <div className="flex items-center space-x-4">
-              <Phone className="w-6 h-6 text-white" />
+              <Phone className="w-6 h-6 text-white flex-shrink-0" />
               <div>
                 <h3 className="text-lg font-light mb-1 tracking-wide">Phone</h3>
-                <a href="tel:+917478994307" className="text-gray-200 hover:text-white transition-colors">+91-7478994307</a>
+                <a href="tel:+917478994307" className="text-white/80 hover:text-white transition-colors">+91-7478994307</a>
               </div>
             </div>
           </div>
           
-          <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 border border-white/20 hover:bg-black/40 transition-all duration-300">
+          <div className="bg-black/20 backdrop-blur-md rounded-xl p-6 border border-white/10 hover:bg-black/30 transition-all duration-300">
             <div className="flex items-center space-x-4">
-              <Mail className="w-6 h-6 text-white" />
+              <Mail className="w-6 h-6 text-white flex-shrink-0" />
               <div>
                 <h3 className="text-lg font-light mb-1 tracking-wide">Email</h3>
-                <a href="mailto:anantaadhikary03@gmail.com" className="text-gray-200 hover:text-white transition-colors">anantaadhikary03@gmail.com</a>
+                <a href="mailto:anantaadhikary03@gmail.com" className="text-white/80 hover:text-white transition-colors break-all">anantaadhikary03@gmail.com</a>
               </div>
             </div>
           </div>
           
-          <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 border border-white/20 hover:bg-black/40 transition-all duration-300">
-            <div className="flex items-center space-x-4">
-              <MapPin className="w-6 h-6 text-white" />
+          <div className="bg-black/20 backdrop-blur-md rounded-xl p-6 border border-white/10 hover:bg-black/30 transition-all duration-300">
+            <div className="flex items-start space-x-4">
+              <MapPin className="w-6 h-6 text-white flex-shrink-0 mt-1" />
               <div>
                 <h3 className="text-lg font-light mb-1 tracking-wide">Location</h3>
-                <p className="text-gray-200">
+                <p className="text-white/80 leading-relaxed">
                   Panagarh<br />
                   Paschim Bardhaman<br />
                   West Bengal
@@ -331,12 +380,12 @@ function App() {
           </div>
         </div>
         
-        <div className="mt-8 text-center">
-          <p className="text-gray-200 mb-6 font-light">Let's create beautiful music together</p>
-          <div className="flex justify-center space-x-4">
+        <div className="text-center">
+          <p className="text-white/80 mb-8 font-light text-lg">Let's create beautiful music together</p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
             <a
               href="https://wa.me/7478994307?text=Hello%20Ananta!%20I%20would%20like%20to%20get%20in%20touch."
-              className="bg-green-600/20 backdrop-blur-sm border border-green-400/30 text-white px-6 py-2 rounded-lg hover:bg-green-600/30 transition-all duration-300 font-light tracking-wide"
+              className="bg-green-600/20 backdrop-blur-md border border-green-400/30 text-white px-8 py-3 rounded-xl hover:bg-green-600/30 transition-all duration-300 font-light tracking-wide transform hover:scale-105"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -344,7 +393,7 @@ function App() {
             </a>
             <a
               href="mailto:anantaadhikary03@gmail.com"
-              className="bg-white/10 backdrop-blur-sm border border-white/30 text-white px-6 py-2 rounded-lg hover:bg-white/20 transition-all duration-300 font-light tracking-wide"
+              className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-3 rounded-xl hover:bg-white/20 transition-all duration-300 font-light tracking-wide transform hover:scale-105"
             >
               Email
             </a>
@@ -352,7 +401,7 @@ function App() {
         </div>
       </div>
       
-      <Navigation showBackButton />
+      <ScrollToTopButton />
     </div>
   );
 
@@ -375,22 +424,25 @@ function App() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Background Image */}
+      {/* Background Image with Flip Effect */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-1000"
+        className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-500 ${isTransitioning ? 'scale-110 opacity-0' : 'scale-100 opacity-100'}`}
         style={{
           backgroundImage: `url(${getBackgroundImage(currentPage)})`,
+          transform: isTransitioning ? 'rotateY(180deg)' : 'rotateY(0deg)',
         }}
       >
         {/* Dark overlay for better text readability */}
-        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="absolute inset-0 bg-black/60"></div>
       </div>
 
       {/* Main Content */}
-      {renderPage()}
+      <div className={`transition-all duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+        {renderPage()}
+      </div>
 
       {/* Additional gradient overlay for better text contrast */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30 pointer-events-none z-10"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40 pointer-events-none z-10"></div>
     </div>
   );
 }
